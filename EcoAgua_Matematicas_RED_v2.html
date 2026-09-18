@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EcoAgua | Matemáticas y ODS 6</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f0fdf4;color:#123}.card{background:#fff;border-radius:18px;padding:20px;box-shadow:0 5px 18px rgba(0,0,0,.08)}
+button{cursor:pointer}.correct{background:#dcfce7}.wrong{background:#fee2e2}
+</style>
+</head>
+<body>
+<header class="bg-emerald-700 text-white p-6"><div class="max-w-6xl mx-auto flex justify-between items-center gap-3 flex-wrap">
+<div><h1 id="title" class="text-3xl font-bold">EcoAgua</h1><p id="subtitle">Matemáticas para el cuidado del agua · ODS 6</p></div>
+<button id="langBtn" class="bg-white text-emerald-700 px-4 py-2 rounded-xl font-bold">English</button></div></header>
+<main class="max-w-6xl mx-auto p-5 space-y-6">
+<section class="card"><h2 id="introTitle" class="text-2xl font-bold text-emerald-700">¿Qué aprenderás?</h2><p id="introText" class="mt-2">Relacionarás el ciclo del agua con volumen, proporciones y estadística para analizar el uso sostenible del recurso hídrico.</p></section>
+
+<section class="card"><h2 id="cycleTitle" class="text-2xl font-bold text-emerald-700">Ciclo del agua</h2>
+<div class="grid md:grid-cols-4 gap-3 mt-4">
+<div class="bg-sky-100 p-4 rounded-xl"><b>☀️ <span id="evap">Evaporación</span></b><p id="evapT">El agua líquida recibe energía y pasa a vapor.</p></div>
+<div class="bg-sky-100 p-4 rounded-xl"><b>☁️ <span id="cond">Condensación</span></b><p id="condT">El vapor se enfría y forma gotas.</p></div>
+<div class="bg-sky-100 p-4 rounded-xl"><b>🌧️ <span id="prec">Precipitación</span></b><p id="precT">El agua cae hacia la superficie.</p></div>
+<div class="bg-sky-100 p-4 rounded-xl"><b>🌊 <span id="run">Escorrentía</span></b><p id="runT">El agua se desplaza hacia ríos, lagos y otros cuerpos de agua.</p></div></div></section>
+
+<section class="card"><h2 id="calcTitle" class="text-2xl font-bold text-emerald-700">Calculadora de volumen y abastecimiento</h2>
+<p id="formula" class="mt-2">Fórmula: V = Largo × Ancho × lluvia acumulada</p>
+<div class="grid md:grid-cols-3 gap-4 mt-4">
+<label><span id="labL">Largo (m)</span><input id="L" type="number" min="0" step="0.1" value="10" class="w-full border p-2 rounded"></label>
+<label><span id="labA">Ancho (m)</span><input id="A" type="number" min="0" step="0.1" value="8" class="w-full border p-2 rounded"></label>
+<label><span id="labH">Lluvia (m)</span><input id="H" type="number" min="0" step="0.001" value="0.05" class="w-full border p-2 rounded"></label></div>
+<button onclick="calc()" id="calcBtn" class="mt-4 bg-emerald-600 text-white px-5 py-2 rounded-xl font-bold">Calcular</button>
+<div id="result" class="mt-4 bg-emerald-50 p-4 rounded-xl"></div></section>
+
+<section class="card"><h2 id="propTitle" class="text-2xl font-bold text-emerald-700">Reto de proporcionalidad</h2>
+<p id="propText">Si 5 personas consumen 500 litros al día, ¿cuántos litros consumirían 8 personas manteniendo la misma proporción?</p>
+<input id="propAns" type="number" class="border p-2 rounded mt-3" placeholder="Respuesta">
+<button onclick="checkProp()" id="propBtn" class="mt-3 bg-sky-600 text-white px-5 py-2 rounded-xl font-bold">Comprobar</button>
+<div id="propResult" class="mt-3 font-bold"></div></section>
+
+<section class="card"><h2 id="statsTitle" class="text-2xl font-bold text-emerald-700">Estadística: consumo de agua</h2>
+<p id="statsText">Ingresa cinco consumos diarios en litros para calcular promedio, máximo y mínimo.</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-4">
+<input class="cons border p-2 rounded" type="number" value="80"><input class="cons border p-2 rounded" type="number" value="100"><input class="cons border p-2 rounded" type="number" value="120"><input class="cons border p-2 rounded" type="number" value="90"><input class="cons border p-2 rounded" type="number" value="110"></div>
+<button onclick="stats()" id="statsBtn" class="mt-4 bg-sky-600 text-white px-5 py-2 rounded-xl font-bold">Analizar datos</button><div id="statsResult" class="mt-4 bg-sky-50 p-4 rounded-xl"></div></section>
+
+<section class="card"><h2 id="quizTitle" class="text-2xl font-bold text-emerald-700">Quiz</h2><div id="quiz"></div>
+<button onclick="checkQuiz()" id="quizBtn" class="mt-4 bg-emerald-600 text-white px-5 py-2 rounded-xl font-bold">Comprobar respuestas</button><div id="quizResult" class="mt-4 font-bold"></div></section>
+
+<section class="card"><h2 id="odsTitle" class="text-2xl font-bold text-emerald-700">ODS 6</h2><p id="odsText">El recurso se relaciona con el ODS 6: garantizar la disponibilidad de agua y su gestión sostenible.</p></section>
+</main>
+<script>
+let lang="es";
+const data={
+es:{
+title:"EcoAgua",subtitle:"Matemáticas para el cuidado del agua · ODS 6",introTitle:"¿Qué aprenderás?",introText:"Relacionarás el ciclo del agua con volumen, proporciones y estadística para analizar el uso sostenible del recurso hídrico.",
+cycleTitle:"Ciclo del agua",calcTitle:"Calculadora de volumen y abastecimiento",formula:"Fórmula: V = Largo × Ancho × lluvia acumulada",labL:"Largo (m)",labA:"Ancho (m)",labH:"Lluvia (m)",calcBtn:"Calcular",
+propTitle:"Reto de proporcionalidad",propText:"Si 5 personas consumen 500 litros al día, ¿cuántos litros consumirían 8 personas manteniendo la misma proporción?",propBtn:"Comprobar",
+statsTitle:"Estadística: consumo de agua",statsText:"Ingresa cinco consumos diarios en litros para calcular promedio, máximo y mínimo.",statsBtn:"Analizar datos",
+quizTitle:"Quiz",quizBtn:"Comprobar respuestas",odsTitle:"ODS 6",odsText:"El recurso se relaciona con el ODS 6: garantizar la disponibilidad de agua y su gestión sostenible.",lang:"English"},
+en:{
+title:"EcoWater",subtitle:"Mathematics for water conservation · SDG 6",introTitle:"What will you learn?",introText:"You will connect the water cycle with volume, proportions and statistics to analyze sustainable water use.",
+cycleTitle:"Water cycle",calcTitle:"Volume and supply calculator",formula:"Formula: V = Length × Width × accumulated rainfall",labL:"Length (m)",labA:"Width (m)",labH:"Rainfall (m)",calcBtn:"Calculate",
+propTitle:"Proportionality challenge",propText:"If 5 people use 500 liters per day, how many liters would 8 people use at the same rate?",propBtn:"Check",
+statsTitle:"Statistics: water consumption",statsText:"Enter five daily water consumption values in liters to calculate average, maximum and minimum.",statsBtn:"Analyze data",
+quizTitle:"Quiz",quizBtn:"Check answers",odsTitle:"SDG 6",odsText:"This resource is linked to SDG 6: ensure availability and sustainable management of water.",lang:"Español"}};
+const cycle={es:[["evap","Evaporación","El agua líquida recibe energía y pasa a vapor."],["cond","Condensación","El vapor se enfría y forma gotas."],["prec","Precipitación","El agua cae hacia la superficie."],["run","Escorrentía","El agua se desplaza hacia ríos, lagos y otros cuerpos de agua."]],en:[["evap","Evaporation","Liquid water receives energy and becomes vapor."],["cond","Condensation","Water vapor cools and forms droplets."],["prec","Precipitation","Water falls to the surface."],["run","Runoff","Water moves toward rivers, lakes and other water bodies."]]};
+function calc(){let L=+Lel().value,A=Ael().value,H=Hel().value,v=L*A*H,l=v*1000,p=Math.floor(l/100);document.getElementById("result").innerHTML=lang==="es"?`<b>Volumen:</b> ${v.toFixed(2)} m³<br><b>Agua:</b> ${l.toFixed(0)} L<br><b>Abastecimiento estimado:</b> ${p} persona(s) durante un día.`:`<b>Volume:</b> ${v.toFixed(2)} m³<br><b>Water:</b> ${l.toFixed(0)} L<br><b>Estimated supply:</b> ${p} person(s) for one day.`}
+function Lel(){return document.getElementById("L")}function Ael(){return document.getElementById("A")}function Hel(){return document.getElementById("H")}
+function checkProp(){let ok=Math.abs(+document.getElementById("propAns").value-800)<.001;document.getElementById("propResult").textContent=lang==="es"?(ok?"Correcto: 800 litros.":"Incorrecto. La respuesta es 800 litros."):(ok?"Correct: 800 liters.":"Incorrect. The answer is 800 liters.");}
+function stats(){let a=[...document.querySelectorAll(".cons")].map(x=>+x.value).filter(Number.isFinite);if(!a.length)return;let avg=a.reduce((x,y)=>x+y,0)/a.length,mx=Math.max(...a),mn=Math.min(...a);document.getElementById("statsResult").innerHTML=lang==="es"?`Promedio: <b>${avg.toFixed(1)} L</b> · Máximo: <b>${mx} L</b> · Mínimo: <b>${mn} L</b>`:`Average: <b>${avg.toFixed(1)} L</b> · Maximum: <b>${mx} L</b> · Minimum: <b>${mn} L</b>`}
+const q={es:[["¿Cuántos litros hay en 1 m³?",["1000 L","100 L","10 L"]],["¿Qué etapa forma gotas cuando el vapor se enfría?",["Condensación","Evaporación","Escorrentía"]],["¿Cuál es la fórmula del volumen usada?",["V = L × A × h","V = L + A + h","V = L ÷ A × h"]]],en:[["How many liters are in 1 m³?",["1000 L","100 L","10 L"]],["Which stage forms droplets when vapor cools?",["Condensation","Evaporation","Runoff"]],["Which volume formula is used?",["V = L × W × h","V = L + W + h","V = L ÷ W × h"]]]};
+function renderQuiz(){document.getElementById("quiz").innerHTML=q[lang].map((x,i)=>`<div class="mb-4"><p class="font-semibold">${i+1}. ${x[0]}</p>${x[1].map((o,j)=>`<label class="block"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}</div>`).join("")}
+function checkQuiz(){let s=0;[0,1,2].forEach(i=>{let x=document.querySelector(`input[name=q${i}]:checked`);if(x&&x.value==="0")s++});document.getElementById("quizResult").textContent=lang==="es"?`Puntaje: ${s}/3`:`Score: ${s}/3`}
+function setText(){let t=data[lang];Object.keys(t).forEach(k=>{let e=document.getElementById(k);if(e)e.textContent=t[k]});cycle[lang].forEach(x=>{document.getElementById(x[0]).textContent=x[1];document.getElementById(x[0]+"T").textContent=x[2]});renderQuiz();calc();stats()}
+document.getElementById("langBtn").onclick=()=>{lang=lang==="es"?"en":"es";setText()};setText();
+</script></body></html>
